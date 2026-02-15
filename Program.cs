@@ -7,6 +7,9 @@ using Songs.Api.Services;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 
 // =======================
 // DB
@@ -62,6 +65,8 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 // =======================
 // Middleware
