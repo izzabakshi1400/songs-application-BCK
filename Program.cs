@@ -69,7 +69,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy("frontend", policy =>
     {
         policy
-            .WithOrigins("http://localhost:5173")
+            .WithOrigins(
+                "http://localhost:5173",
+                "https://songs-application.vercel.app"
+            )
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
