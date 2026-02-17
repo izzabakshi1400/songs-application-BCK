@@ -68,15 +68,28 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("frontend", policy =>
     {
-        policy
-            .WithOrigins(
-                "http://localhost:5173",
-                "https://songs-application.vercel.app"
-            )
-            .AllowAnyHeader()
-            .AllowAnyMethod();
+        if (builder.Environment.IsDevelopment())
+        {
+            // Dev (local)
+            policy
+                .WithOrigins("http://localhost:5173")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        }
+        else
+        {
+            // Prod (Vercel deployments + main domain)
+            policy
+                .SetIsOriginAllowed(origin =>
+                    origin == "https://songs-application.vercel.app" ||
+                    (origin != null && origin.EndsWith(".vercel.app"))
+                )
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        }
     });
 });
+
 
 var app = builder.Build();
 app.UseSwagger();
